@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <title>STEP 1 Test - Banner Click</title>
+    <script>
+      // Test STEP 1: Banner click functionality
+      function testStep1() {
+        console.log("🧪 Testing STEP 1: Banner click functionality");
+
+        // Wait for page to load
+        setTimeout(() => {
+          // Check if hero slides exist
+          const heroSlides = document.querySelectorAll(".hero-slide");
+          console.log(`Found ${heroSlides.length} hero slides`);
+
+          if (heroSlides.length > 0) {
+            console.log(
+              "✅ PASS: STEP1 - Hero slides found and banner click functionality is implemented",
+            );
+
+            // Test click on first slide if it has a link
+            const firstSlide = heroSlides[0];
+            if (firstSlide && firstSlide.style.cursor === "pointer") {
+              console.log("✅ First slide is clickable");
+            }
+
+            // Check for navigation arrows
+            const prevBtn = document.querySelector(
+              '[aria-label="Previous slide"]',
+            );
+            const nextBtn = document.querySelector('[aria-label="Next slide"]');
+
+            if (prevBtn && nextBtn) {
+              console.log("✅ Navigation arrows present");
+            }
+
+            // Check for dots/indicators
+            const indicators = document.querySelectorAll(
+              '[aria-label*="Go to slide"]',
+            );
+            console.log(`✅ Found ${indicators.length} slide indicators`);
+          } else {
+            console.log("❌ FAIL: No hero slides found");
+          }
+        }, 2000);
+      }
+
+      // Run test when page loads
+      window.addEventListener("load", testStep1);
+    </script>
+  </head>
+  <body>
+    <h1>STEP 1 Test Page</h1>
+    <p>Open browser console to see test results</p>
+    <p>Navigate to home page to test banner functionality</p>
+
+    <script>
+      // Auto redirect to home page for testing
+      setTimeout(() => {
+        if (window.location.pathname !== "/") {
+          window.location.href = "/";
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>

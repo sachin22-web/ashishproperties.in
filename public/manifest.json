@@ -1,0 +1,39 @@
+{
+  "name": "Ashish Property - Buy & Sell Properties",
+  "short_name": "Ashish Property",
+  "description": "Find and sell properties easily in Rohtak and nearby areas",
+  "id": "/?source=pwa",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#C70000",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "lifestyle"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/favicon.ico", "sizes": "16x16 32x32 48x48", "type": "image/x-icon" }
+  ],
+  "screenshots": [
+    { "src": "/screenshots/screenshot1.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow" },
+    { "src": "/screenshots/screenshot2.png", "sizes": "1920x1080", "type": "image/png", "form_factor": "wide" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Sell Property",
+      "short_name": "Sell",
+      "description": "Post a new property for sale",
+      "url": "/post-property",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Search Properties",
+      "short_name": "Search",
+      "description": "Search for properties",
+      "url": "/search"
+    }
+  ]
+}

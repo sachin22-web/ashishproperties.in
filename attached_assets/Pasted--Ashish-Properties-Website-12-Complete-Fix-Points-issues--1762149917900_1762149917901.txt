@@ -1,0 +1,98 @@
+यह रहे Ashish Properties Website – 12 Complete Fix Points,
+जो सभी पुराने और नए issues को मिलाकर तैयार किए गए हैं 👇
+
+⸻
+
+🏠 Ashish Properties – Full Fix Points List (Complete 12 Points)
+
+🔧 1. Category Display & Property Linking
+	•	Properties homepage पर दिखती हैं लेकिन related category (Plot, Flat, Commercial, Residential) में नहीं।
+	•	Property को सही category से connect किया जाए ताकि user category पर क्लिक करे तो केवल उसी category की properties दिखें।
+	•	Category filter पूरी तरह से functional हो।
+
+⸻
+
+🖼 2. Image Watermark & Zoom Function
+	•	Property images पर watermark की position fix की जाए (bottom-right या center translucent)।
+	•	Property detail page पर image zoom in / zoom out फीचर enable किया जाए।
+	•	जब image download की जाए, तो watermark न दिखे (clean version download हो)।
+	•	Admin panel से watermark logo upload/change का option दिया जाए।
+
+⸻
+
+📲 3. PWA App Button (Install App)
+	•	Desktop पर “Install App” button सही दिखता है, लेकिन mobile view पर नहीं दिख रहा।
+	•	इसे responsive बनाया जाए ताकि mobile में भी “Install Ashish Properties App” बटन दिखे।
+	•	APK Download Button (optional) भी जोड़ा जाए, ताकि user सीधा APK फाइल डाउनलोड कर सके।
+
+⸻
+
+⚙ 4. Admin Panel Updates
+	•	Admin panel में User–Admin Setting Module जोड़ा जाए ताकि admin pages create, edit, delete कर सके।
+	•	Property approval system enable किया जाए — user द्वारा post की गई property admin approval के बाद ही live हो।
+	•	Coupon system fix किया जाए ताकि front-end पर coupon apply हो सके।
+	•	Admin को featured property tag assign करने और property hide/show करने की सुविधा मिले।
+
+⸻
+
+💼 5. Static & Dynamic Package System
+	•	Static package – manually assign होंगे (expiry नहीं)।
+	•	Dynamic package – automatic expiry system (date/time based)।
+	•	Package expiry के बाद property auto-hide हो जाए।
+	•	Admin panel में package upgrade, expiry alert और renewal reminder options हों।
+
+⸻
+
+🔔 6. Notification System
+	•	जब नई property add या approve हो, user को notification मिले।
+	•	Header में notification bell icon दिखे और read/unread status दिखाया जाए।
+	•	Notification user dashboard में भी visible हो।
+
+⸻
+
+🏡 7. Property Details Page Fixes
+	•	Nearby location map ठीक से load नहीं हो रहा — fix किया जाए।
+	•	Property image slider mobile responsive बनाया जाए।
+	•	“Contact Owner” button सही से redirect या popup form खोले।
+	•	“Review Input Field” property review करते समय गायब हो जाती है — इसे ठीक किया जाए।
+
+⸻
+
+🔍 8. Search & Filter Improvements
+	•	Search box में auto-suggestion (city, area, property type) दिखे।
+	•	Filter options (price, category, location, purpose) smoothly काम करें।
+	•	Filter reset button भी जोड़ा जाए।
+
+⸻
+
+🧭 9. Homepage Fixes
+	•	Sidebar image दिखाई नहीं दे रही — About section की image add की जाए।
+	•	“View Project” बटन hover पर नहीं दिखता — default visible रखा जाए।
+	•	Contact number (7419100032) सभी pages में update किया जाए।
+	•	Header और footer branding uniform हो (logo, font, color consistency)।
+
+⸻
+
+🧾 10. Leads & Enquiry System
+	•	जब user enquiry करे:
+	•	Admin को notification + email जाए।
+	•	User को confirmation email भेजी जाए।
+	•	Enquiry list admin panel में save हो और filter के साथ search की जा सके।
+	•	Enquiry form validation और thank-you message सही से दिखें।
+
+⸻
+
+🧠 11. Additional Enhancements
+	•	Property posting form को step-by-step बनाया जाए (user-friendly design)।
+	•	Admin dashboard में analytics हो — active, pending, expired property count।
+	•	SEO tools enable किए जाएँ (meta title, description, OG tags for each property)।
+	•	Site speed optimization (cache + image compression + lazy loading)।
+
+⸻
+
+📱 12. Mobile Dashboard Enhancement
+	•	Mobile dashboard पर navigation आसान बनाया जाए।
+	•	“Profile”, “My Properties”, “Packages”, “Notifications”, “Enquiries” आदि clearly visible हों।
+	•	Smooth app-style responsive view fix किया जाए ताकि PWA version बेहतर दिखे।
+
+⸻

@@ -1,0 +1,93 @@
+. PWA App Button (Install App)
+
+The “Install App” button works fine on desktop but doesn’t appear on mobile view.
+
+Make it responsive so that “Install Ashish Properties App” is also visible on mobile.
+
+Add an optional APK Download Button so users can directly download the APK file.
+
+⚙ 4. Admin Panel Updates
+
+Add a User–Admin Settings Module where the admin can create, edit, and delete pages.
+
+Enable a Property Approval System so that properties posted by users go live only after admin approval.
+
+Fix the Coupon System so that users can apply coupons correctly on the frontend.
+
+Allow the admin to assign Featured Property tags and toggle property visibility (show/hide).
+
+💼 5. Static & Dynamic Package System
+
+Static Packages – Manually assigned, with no expiry date.
+
+Dynamic Packages – Auto-expire based on date/time.
+
+Properties should automatically hide once a package expires.
+
+Add options in the admin panel for package upgrades, expiry alerts, and renewal reminders.
+
+🔔 6. Notification System
+
+Notify users when a new property is added or approved.
+
+Add a notification bell icon in the header with read/unread indicators.
+
+Notifications should also appear inside the user dashboard.
+
+🏡 7. Property Details Page Fixes
+
+Fix the issue with the nearby location map not loading properly.
+
+Make the property image slider fully mobile-responsive.
+
+Ensure the “Contact Owner” button correctly redirects or opens a popup form.
+
+Fix the “Review Input Field” disappearing issue during property reviews.
+
+🔍 8. Search & Filter Improvements
+
+Enable auto-suggestions in the search bar (for city, area, property type, etc.).
+
+Ensure filters (price, category, location, purpose) work smoothly and update dynamically.
+
+Add a Filter Reset button for easy clearing of applied filters.
+
+🧭 9. Homepage Fixes
+
+Add the missing sidebar image (from the About section).
+
+Make the “View Project” button always visible instead of only on hover.
+
+Update the contact number (7419100032) across all pages.
+
+Ensure consistent branding across header and footer (logo, font, and color scheme).
+
+🧾 10. Leads & Enquiry System
+
+When a user submits an enquiry:
+
+Send a notification + email to the admin.
+
+Send a confirmation email to the user.
+
+Save all enquiries in the admin panel with searchable and filterable listings.
+
+Ensure enquiry form validation and thank-you messages display correctly.
+
+🧠 11. Additional Enhancements
+
+Redesign the property posting form into a step-by-step wizard for better UX.
+
+Add analytics in the admin dashboard (active, pending, expired property counts).
+
+Enable SEO tools (meta title, description, and OG tags for each property).
+
+Improve site speed with caching, image compression, and lazy loading.
+
+📱 12. Mobile Dashboard Enhancement
+
+Improve navigation flow within the mobile dashboard.
+
+Make sections like “Profile,” “My Properties,” “Packages,” “Notifications,” and “Enquiries” clearly visible.
+
+Optimize the layout for an app-like PWA experience with smooth responsiveness.

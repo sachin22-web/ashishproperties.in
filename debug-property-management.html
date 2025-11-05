@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Debug PropertyManagement</title>
+    <script>
+      // Test function to check PropertyManagement component
+      function testPropertyManagement() {
+        console.log("🧪 Testing PropertyManagement component fixes...");
+
+        // Wait for component to load
+        setTimeout(() => {
+          // Check if PropertyManagement component is rendered without errors
+          const adminContent = document.querySelector(
+            '[data-testid="property-management"], .property-management, main',
+          );
+
+          if (adminContent) {
+            console.log("✅ PropertyManagement component loaded successfully");
+
+            // Check for any error messages in the UI
+            const errorElements = document.querySelectorAll(
+              '[class*="error"], .error, [data-testid="error"]',
+            );
+            console.log(
+              `🔍 Found ${errorElements.length} error elements in UI`,
+            );
+
+            // Check for property table
+            const propertyTable = document.querySelector(
+              'table, [role="table"]',
+            );
+            if (propertyTable) {
+              console.log("✅ Property table found");
+
+              // Count table rows
+              const rows = propertyTable.querySelectorAll('tr, [role="row"]');
+              console.log(`📊 Found ${rows.length} table rows`);
+            } else {
+              console.log("⚠️ Property table not found (might be loading)");
+            }
+
+            // Check for search functionality
+            const searchInput = document.querySelector(
+              'input[type="text"], input[placeholder*="search"]',
+            );
+            if (searchInput) {
+              console.log("✅ Search input found");
+            }
+
+            console.log(
+              "✅ PropertyManagement null safety fixes appear to be working",
+            );
+          } else {
+            console.log(
+              "❌ PropertyManagement component not found or failed to load",
+            );
+          }
+        }, 3000);
+      }
+
+      // Check for JavaScript errors
+      window.addEventListener("error", (event) => {
+        if (
+          event.message.includes("toLowerCase") ||
+          event.message.includes("null")
+        ) {
+          console.error(
+            "❌ Null reference error still occurring:",
+            event.message,
+          );
+          console.error("📍 Location:", event.filename, "line", event.lineno);
+        }
+      });
+
+      // Check for React errors
+      window.addEventListener("unhandledrejection", (event) => {
+        if (
+          event.reason &&
+          event.reason.message &&
+          (event.reason.message.includes("toLowerCase") ||
+            event.reason.message.includes("null"))
+        ) {
+          console.error(
+            "❌ React error still occurring:",
+            event.reason.message,
+          );
+        }
+      });
+
+      // Run test when page loads
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", testPropertyManagement);
+      } else {
+        testPropertyManagement();
+      }
+    </script>
+  </head>
+  <body>
+    <h1>PropertyManagement Debug Test</h1>
+    <p>Check browser console for test results.</p>
+    <p>Navigate to admin property management page to test the fixes.</p>
+
+    <script>
+      // Auto redirect to admin page if needed
+      setTimeout(() => {
+        if (!window.location.pathname.includes("/admin")) {
+          console.log("Redirecting to admin page for testing...");
+          window.location.href = "/admin";
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>

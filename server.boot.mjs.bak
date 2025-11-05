@@ -1,0 +1,61 @@
+import { fileURLToPath } from 'url';
+import path from 'path';
+import http from 'http';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
+
+const PORT = process.env.PORT || 8017;
+const HOST = process.env.HOST || '127.0.0.1';
+
+async function main() {
+  try {
+    const entryPath = path.join(__dirname, 'dist/server/index.mjs');
+    const mod = await import(entryPath);
+
+    let app = null;
+    let server = null;
+
+    // Common export patterns
+    if (typeof mod.createServer === 'function') {
+      const res = await mod.createServer();
+      app    = res?.app || res?.server?.app || res?.default || res;
+      server = res?.server || null;
+    } else if (typeof mod.default === 'function') {
+      const res = await mod.default();
+      app    = res?.app || res?.server?.app || res;
+      server = res?.server || null;
+    } else if (mod.app) {
+      app = mod.app;
+    }
+
+    if (!app) {
+      console.error('[boot] No Express app exported from dist/server/index.mjs');
+      process.exit(1);
+    }
+
+    // Create HTTP server if not given
+    if (!server) {
+      server = http.createServer(app);
+    }
+
+    // Socket attach (optional in your build)
+    if (typeof mod.initializeSocket === 'function') {
+      try { mod.initializeSocket(server); } catch {}
+    } else if (typeof mod.getSocketServer === 'function') {
+      try { mod.getSocketServer(server); } catch {}
+    }
+
+    server.listen(PORT, HOST, () => {
+      console.log(`✅ API listening on http://${HOST}:${PORT}`);
+    });
+
+    process.on('SIGINT',  () => { console.log('🛑 SIGINT');  server.close(() => process.exit(0)); });
+    process.on('SIGTERM', () => { console.log('🛑 SIGTERM'); server.close(() => process.exit(0)); });
+
+  } catch (err) {
+    console.error('❌ Boot error:', err);
+    process.exit(1);
+  }
+}
+main();

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Functionality Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .test-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .result {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 4px;
+        border-left: 4px solid;
+      }
+      .success {
+        background-color: #f0f9ff;
+        border-color: #10b981;
+        color: #065f46;
+      }
+      .error {
+        background-color: #fef2f2;
+        border-color: #ef4444;
+        color: #991b1b;
+      }
+      .info {
+        background-color: #fefce8;
+        border-color: #eab308;
+        color: #854d0e;
+      }
+      button {
+        background: #c70000;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 10px 5px;
+      }
+      button:hover {
+        background: #a60000;
+      }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+      .log {
+        background: #1f2937;
+        color: #f9fafb;
+        padding: 15px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+        max-height: 300px;
+        overflow-y: auto;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-card">
+      <h1>Chat Functionality Test</h1>
+      <p>ZERO-TOKEN PATCH+TEST: Testing chat send functionality</p>
+
+      <button onclick="runChatTest()" id="testBtn">Run Chat Test</button>
+      <button onclick="clearResults()">Clear Results</button>
+
+      <div id="results"></div>
+      <div class="log" id="log" style="display: none"></div>
+    </div>
+
+    <script>
+      function log(message) {
+        const logEl = document.getElementById("log");
+        logEl.style.display = "block";
+        logEl.textContent += new Date().toISOString() + ": " + message + "\n";
+        logEl.scrollTop = logEl.scrollHeight;
+        console.log(message);
+      }
+
+      function addResult(type, message) {
+        const resultsEl = document.getElementById("results");
+        const resultEl = document.createElement("div");
+        resultEl.className = `result ${type}`;
+        resultEl.innerHTML = `
+                <strong>${new Date().toLocaleTimeString()}</strong><br>
+                ${message}
+            `;
+        resultsEl.appendChild(resultEl);
+        log(message);
+      }
+
+      function clearResults() {
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("log").textContent = "";
+        document.getElementById("log").style.display = "none";
+      }
+
+      async function runChatTest() {
+        const btn = document.getElementById("testBtn");
+        btn.disabled = true;
+        btn.textContent = "Testing...";
+
+        clearResults();
+
+        try {
+          log("🧪 Starting chat functionality test...");
+
+          // Step 1: Get one active property
+          log("📋 Step 1: Getting active property...");
+          addResult("info", "Step 1: Fetching active property...");
+
+          const propertiesResponse = await fetch(
+            "/api/properties?status=active&limit=1",
+          );
+          log(`Properties response status: ${propertiesResponse.status}`);
+
+          if (!propertiesResponse.ok) {
+            throw new Error(
+              `Failed to fetch properties: ${propertiesResponse.status}`,
+            );
+          }
+
+          const propertiesData = await propertiesResponse.json();
+          log("Properties response: " + JSON.stringify(propertiesData));
+
+          if (
+            !propertiesData.success ||
+            !propertiesData.data ||
+            propertiesData.data.length === 0
+          ) {
+            throw new Error("No active properties found");
+          }
+
+          const propertyId = propertiesData.data[0]._id;
+          log(`✅ Found active property: ${propertyId}`);
+          addResult("success", `Found active property: ${propertyId}`);
+
+          // Step 2: Check JWT token
+          const token = localStorage.getItem("token");
+          if (!token) {
+            addResult("error", "No JWT token found. Please login first.");
+            throw new Error("No JWT token found. Please login first.");
+          }
+          log("✅ JWT token found");
+          addResult("success", "JWT token found");
+
+          // Step 3: Create/find conversation
+          log("📋 Step 2: Creating/finding conversation...");
+          addResult("info", "Step 2: Creating/finding conversation...");
+
+          const conversationResponse = await fetch(
+            `/api/conversations/find-or-create?propertyId=${propertyId}`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            },
+          );
+
+          log(
+            `Conversation request: POST /api/conversations/find-or-create?propertyId=${propertyId}`,
+          );
+          log(`Response status: ${conversationResponse.status}`);
+
+          if (!conversationResponse.ok) {
+            const errorText = await conversationResponse.text();
+            log(`❌ FAIL: conversation creation`);
+            log(
+              `URL: /api/conversations/find-or-create?propertyId=${propertyId}`,
+            );
+            log(`Method: POST`);
+            log(`Status: ${conversationResponse.status}`);
+            log(`Body: ${errorText}`);
+
+            addResult(
+              "error",
+              `FAIL: conversation creation - Status: ${conversationResponse.status}`,
+            );
+            addResult(
+              "error",
+              `URL: /api/conversations/find-or-create?propertyId=${propertyId}`,
+            );
+            addResult("error", `Method: POST`);
+            addResult("error", `Body: ${errorText}`);
+            return;
+          }
+
+          const conversationData = await conversationResponse.json();
+          log("Conversation response: " + JSON.stringify(conversationData));
+
+          if (!conversationData.success) {
+            log(`❌ FAIL: conversation creation`);
+            log(
+              `URL: /api/conversations/find-or-create?propertyId=${propertyId}`,
+            );
+            log(`Method: POST`);
+            log(`Status: ${conversationResponse.status}`);
+            log(`Body: ${JSON.stringify(conversationData)}`);
+
+            addResult(
+              "error",
+              `FAIL: conversation creation - ${conversationData.error || "Unknown error"}`,
+            );
+            return;
+          }
+
+          const conversationId = conversationData.data._id;
+          log(`✅ Conversation created/found: ${conversationId}`);
+          addResult("success", `Conversation created/found: ${conversationId}`);
+
+          // Step 4: Send ping-test message
+          log("📋 Step 3: Sending ping-test message...");
+          addResult("info", "Step 3: Sending ping-test message...");
+
+          const messageResponse = await fetch(
+            `/api/conversations/${conversationId}/messages`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                text: "ping-test",
+              }),
+            },
+          );
+
+          log(
+            `Message request: POST /api/conversations/${conversationId}/messages`,
+          );
+          log(`Response status: ${messageResponse.status}`);
+
+          if (!messageResponse.ok) {
+            const errorText = await messageResponse.text();
+            log(`❌ FAIL: message send`);
+            log(`URL: /api/conversations/${conversationId}/messages`);
+            log(`Method: POST`);
+            log(`Status: ${messageResponse.status}`);
+            log(`Body: ${errorText}`);
+
+            addResult(
+              "error",
+              `FAIL: message send - Status: ${messageResponse.status}`,
+            );
+            addResult(
+              "error",
+              `URL: /api/conversations/${conversationId}/messages`,
+            );
+            addResult("error", `Method: POST`);
+            addResult("error", `Body: ${errorText}`);
+            return;
+          }
+
+          const messageData = await messageResponse.json();
+          log("Message response: " + JSON.stringify(messageData));
+
+          if (!messageData.success) {
+            log(`❌ FAIL: message send`);
+            log(`URL: /api/conversations/${conversationId}/messages`);
+            log(`Method: POST`);
+            log(`Status: ${messageResponse.status}`);
+            log(`Body: ${JSON.stringify(messageData)}`);
+
+            addResult(
+              "error",
+              `FAIL: message send - ${messageData.error || "Unknown error"}`,
+            );
+            return;
+          }
+
+          // Success!
+          log("✅ PASS: chat send");
+          addResult("success", "🎉 PASS: chat send");
+          addResult("success", "Chat functionality is working correctly!");
+        } catch (error) {
+          log("❌ Test failed with error: " + error.message);
+          addResult("error", `Test failed: ${error.message}`);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Run Chat Test";
+        }
+      }
+
+      // Auto-run on page load if token exists
+      window.addEventListener("load", () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          addResult(
+            "info",
+            "JWT token found, ready to test chat functionality",
+          );
+        } else {
+          addResult("error", "No JWT token found. Please login first at /auth");
+        }
+      });
+    </script>
+  </body>
+</html>

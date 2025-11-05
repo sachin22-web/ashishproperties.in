@@ -1,0 +1,108 @@
+You are a senior React + TypeScript + Tailwind + shadcn/ui engineer inside Builder.io. 
+Create an **Admin Subcategories Management** page for an Event/Classifieds admin panel.
+
+## Purpose
+From Categories page when I click “Manage Subcategories”, this page must open at route:
+`/admin/categories/:categoryId/subcategories`
+It must read `categoryId` from the URL and load subcategories for that category.
+
+## Design & UX
+- Clean, MNC-level admin layout.
+- Header: “Subcategories – {CategoryName or Category #ID}”
+- Top bar: Search input (debounced 400ms), “Add Subcategory” button, and a breadcrumb:
+  Home › Categories › {CategoryName} › Subcategories
+- Main card with:
+  - Table view: columns [#, Name, Slug, Parent Category, Status (badge), Updated At, Actions]
+  - Sticky table header, responsive on mobile (cards), empty-state message.
+  - Pagination (page size selector: 10/25/50), page numbers, next/prev.
+- Actions column:
+  - Edit (opens modal)
+  - Delete (confirm dialog)
+  - Toggle status (Active/Inactive switch with optimistic UI)
+- Toasts for success/error.
+
+## Tech & State
+- React + TypeScript + Tailwind + shadcn/ui components only.
+- Use React Router useParams() to get `categoryId`.
+- Centralized API helper:
+  - Base URL from `import.meta.env.VITE_API_BASE_URL` (fallback: “/”).
+  - Auto adds `Authorization: Bearer ${localStorage.getItem('adminToken') || ''}`.
+  - JSON requests with timeout 15s, graceful error messages.
+- Loading skeletons for table and modals.
+- Form validation with Zod: fields { name: string(min 2), slug: string(kebab-case), status: enum(“active”|“inactive”) }.
+- Slug auto-generate from name (editable).
+- Optimistic updates with rollback on failure.
+
+## Routing (IMPORTANT to avoid 404)
+- Register route: `/admin/categories/:categoryId/subcategories`
+- Export a default React component `AdminSubcategoriesPage`.
+- If `categoryId` is missing/invalid, show a friendly error and a “Back to Categories” link.
+
+## API CONTRACT (Replace with my real endpoints later)
+Create a TypeScript config section at the top with these defaults (easy to change):
+
+
+const API = {
+  list: (categoryId: string, q: string, page: number, limit: number) => `/api/categories/${categoryId}/subcategories?search=${encodeURIComponent(q)}&page=${page}&limit=${limit}`,
+  create: (categoryId: string) => `/api/categories/${categoryId}/subcategories`,
+  update: (id: string) => `/api/subcategories/${id}`,
+  remove: (id: string) => `/api/subcategories/${id}`,
+  category: (categoryId: string) => `/api/categories/${categoryId}`, // to show category name
+};
+
+
+## Data shapes
+Subcategory:
+
+
+{
+  _id: string;
+  name: string;
+  slug: string;
+  categoryId: string;
+  status: "active" | "inactive";
+  updatedAt: string;
+}
+
+List response:
+
+
+{
+  data: Subcategory[];
+  pagination: { page: number; limit: number; total: number; }
+}
+
+
+## Features – Details
+1) **List & Search:** On load, call API.list(categoryId, search, page, limit). Debounce search input. Show skeleton while loading.
+2) **Add:** “Add Subcategory” button opens modal with form {name, slug(auto), status(default active)}. On submit:
+   - POST to API.create(categoryId) with JSON body.
+   - On success: close modal, toast “Created”, refresh list.
+3) **Edit:** Row action opens modal prefilled; PUT to API.update(id). On success: update row without full reload.
+4) **Delete:** Row action “Delete” → confirm dialog “Type DELETE”. On confirm: DELETE API.remove(id); update table and toast.
+5) **Status Toggle:** Switch in table; on change send PUT API.update(id) with new status. Optimistic UI, rollback on error.
+6) **Pagination:** Keep query state in URL (?search=&page=&limit=) so refresh preserves view.
+7) **Error Handling:** 
+   - If 401/403 → show “Session expired” and link to /admin/login.
+   - If 404 from list: Show “No subcategories found or invalid Category” with “Back to Categories”.
+   - All failures show readable toasts with server message.
+8) **Accessibility:** Proper labels, keyboard-focus in modals, ESC to close.
+
+## Dummy fallback (for local preview)
+If API fails, use a local array of 6 mock subcategories and simulate latency 600ms so designers can preview. But keep code paths ready for real API.
+
+## Deliverables
+- Single TSX file exporting `AdminSubcategoriesPage`.
+- Small `apiClient.ts` inside same file (or local module) for fetch with timeout & headers.
+- Zod schema in-file.
+- No external UI libraries beyond shadcn/ui already available in Builder.
+- Production-ready, clean code, comments at the top explaining env vars and endpoints to replace later.
+
+Tips
+
+Agar still 404 aaye, pehle URL bar me exact path check karo:
+/admin/categories/123/subcategories (yahan 123 tumhari real categoryId hogi).
+
+Categories page me “Manage Subcategories” button ka navigate() isi pattern se hona chahiye.
+
+Backend route names agar different hain, upar prompt me API CONTRACT section ke URLs ko apne exact paths se apne exact paths se replace kar do (Builder code in-place update karega).

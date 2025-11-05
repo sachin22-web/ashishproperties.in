@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Test API Fix</title>
+  </head>
+  <body>
+    <h1>API Fix Test</h1>
+    <div id="status">Testing...</div>
+    <div id="result"></div>
+
+    <script>
+      console.log("Testing API fix...");
+
+      // Mock the api function as it would work in the actual app
+      function api(p, o = {}) {
+        // Use the relative URL for API calls
+        const url = `/api/${p.replace(/^\/+/, "")}`;
+        console.log("Making API call to:", url);
+
+        return fetch(url, {
+          method: o.method || "GET",
+          headers: {
+            "Content-Type": "application/json",
+            ...(o.headers || {}),
+          },
+          body: o.body ? JSON.stringify(o.body) : undefined,
+        }).then(async (r) => {
+          let jsonData;
+          try {
+            jsonData = await r.json();
+          } catch (e) {
+            const text = await r.text();
+            console.error("Failed to parse JSON response:", text);
+            jsonData = { error: "Invalid JSON response", rawResponse: text };
+          }
+
+          return {
+            ok: r.ok,
+            status: r.status,
+            json: jsonData,
+          };
+        });
+      }
+
+      // Test the API call
+      api("admin/conversations?limit=20")
+        .then((result) => {
+          console.log("API Result:", result);
+          document.getElementById("status").innerHTML =
+            `Status: ${result.status}`;
+          document.getElementById("result").innerHTML =
+            `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+
+          if (result.ok) {
+            console.log("✅ API call successful!");
+          } else {
+            console.log("⚠️ API returned error, but no JSON parse error");
+          }
+        })
+        .catch((error) => {
+          console.error("❌ API call failed:", error);
+          document.getElementById("status").innerHTML =
+            `Error: ${error.message}`;
+          document.getElementById("result").innerHTML =
+            `<pre>${JSON.stringify(error, null, 2)}</pre>`;
+        });
+    </script>
+  </body>
+</html>

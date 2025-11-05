@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Debug Network Fixes</title>
+    <script>
+      // Debug and test network fixes
+      function testNetworkFixes() {
+        console.log("🧪 Testing network error fixes...");
+
+        // Monitor for fetch errors
+        const originalFetch = window.fetch;
+        let fetchAttempts = 0;
+        let fetchErrors = 0;
+
+        window.fetch = function (...args) {
+          fetchAttempts++;
+          console.log(`📡 Fetch attempt #${fetchAttempts}: ${args[0]}`);
+
+          return originalFetch
+            .apply(this, args)
+            .then((response) => {
+              if (!response.ok) {
+                console.log(
+                  `⚠️ Fetch failed with ${response.status}: ${args[0]}`,
+                );
+              } else {
+                console.log(`✅ Fetch successful: ${args[0]}`);
+              }
+              return response;
+            })
+            .catch((error) => {
+              fetchErrors++;
+              console.error(
+                `❌ Fetch error #${fetchErrors}: ${args[0]}`,
+                error,
+              );
+              throw error;
+            });
+        };
+
+        // Check for error boundaries and components
+        setTimeout(() => {
+          console.log("🔍 Checking components...");
+
+          // Check PropertyAdsSlider
+          const propertySlider = document.querySelector(
+            '[class*="PropertyAds"], [class*="carousel"]',
+          );
+          if (propertySlider) {
+            console.log("✅ PropertyAdsSlider component found");
+          } else {
+            console.log("⚠️ PropertyAdsSlider component not found");
+          }
+
+          // Check OLXStyleListings
+          const olxListings = document.querySelector(
+            '[class*="OLX"], [class*="grid"], [class*="property-card"]',
+          );
+          if (olxListings) {
+            console.log("✅ OLXStyleListings component found");
+          } else {
+            console.log("⚠️ OLXStyleListings component not found");
+          }
+
+          // Check for loading states
+          const loadingElements = document.querySelectorAll(
+            '[class*="loading"], [class*="skeleton"], [class*="animate-pulse"]',
+          );
+          console.log(`⏳ Found ${loadingElements.length} loading elements`);
+
+          // Check for error messages
+          const errorElements = document.querySelectorAll(
+            '[class*="error"], .error',
+          );
+          console.log(`❌ Found ${errorElements.length} error elements`);
+
+          // Summary
+          console.log(
+            `📊 Summary: ${fetchAttempts} fetch attempts, ${fetchErrors} errors`,
+          );
+
+          if (fetchErrors === 0) {
+            console.log(
+              "✅ No fetch errors detected - fixes appear to be working",
+            );
+          } else if (fetchErrors < fetchAttempts) {
+            console.log(
+              "⚠️ Some fetch errors detected but not all requests failed",
+            );
+          } else {
+            console.log(
+              "❌ All fetch requests failed - network connectivity issue",
+            );
+          }
+        }, 5000);
+      }
+
+      // Monitor network status
+      function monitorNetworkStatus() {
+        console.log(
+          `🌐 Network status: ${navigator.onLine ? "Online" : "Offline"}`,
+        );
+
+        window.addEventListener("online", () => {
+          console.log("✅ Network came back online");
+        });
+
+        window.addEventListener("offline", () => {
+          console.log("❌ Network went offline");
+        });
+      }
+
+      // Run tests
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          testNetworkFixes();
+          monitorNetworkStatus();
+        });
+      } else {
+        testNetworkFixes();
+        monitorNetworkStatus();
+      }
+
+      // Test after delay for component mounting
+      setTimeout(testNetworkFixes, 8000);
+    </script>
+  </head>
+  <body>
+    <h1>Network Error Fixes Debug</h1>
+    <p>Check browser console for network debugging information.</p>
+    <p>
+      This page monitors fetch requests and component loading to verify fixes.
+    </p>
+
+    <div
+      style="
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      "
+    >
+      <h3>Fixes Applied:</h3>
+      <ul>
+        <li>Added request timeouts (5-8 seconds)</li>
+        <li>Enhanced error handling for network failures</li>
+        <li>Better fallback mechanisms</li>
+        <li>Proper abort controller usage</li>
+        <li>Network utilities for future use</li>
+      </ul>
+    </div>
+
+    <script>
+      // Auto redirect to home page for testing
+      setTimeout(() => {
+        if (window.location.pathname !== "/") {
+          console.log("Redirecting to home page for testing...");
+          window.location.href = "/";
+        }
+      }, 2000);
+    </script>
+  </body>
+</html>

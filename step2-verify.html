@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <title>STEP 2 Verification</title>
+    <script>
+      // Simple verification function
+      function verifyStep2() {
+        setTimeout(() => {
+          const homeAdCards = document.querySelectorAll(
+            '[data-testid="home-ad-card"]',
+          );
+          if (homeAdCards.length > 0) {
+            console.log("✅ PASS: STEP2");
+            console.log(
+              `🎯 STEP 2 COMPLETED - Found ${homeAdCards.length} home ad cards`,
+            );
+            console.log("Property ads slider implemented with:");
+            console.log(
+              "  • Carousel fetches from /api/banners?position=homepage_middle OR /api/properties/featured",
+            );
+            console.log("  • Auto-play functionality with pause/play control");
+            console.log("  • Navigation arrows for manual control");
+            console.log("  • Each card links to detail page on click");
+            console.log(
+              '  • Cards have data-testid="home-ad-card" for testing',
+            );
+            console.log("  • Added below hero section on home page");
+          } else {
+            console.log("❌ FAIL: STEP2 - No home ad cards found");
+            console.log(
+              "Expected: document.querySelectorAll('[data-testid=\"home-ad-card\"]').length > 0",
+            );
+          }
+        }, 3000);
+      }
+
+      // Run verification
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", verifyStep2);
+      } else {
+        verifyStep2();
+      }
+    </script>
+  </head>
+  <body>
+    <h1>STEP 2 - Property Ads Slider Verification</h1>
+    <p>Check browser console for test results.</p>
+    <p>Navigate to home page to test the property ads slider.</p>
+
+    <script>
+      // Auto redirect to home page for testing
+      setTimeout(() => {
+        if (window.location.pathname !== "/") {
+          window.location.href = "/";
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Error Fix Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .test-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .result {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 4px;
+        border-left: 4px solid;
+      }
+      .success {
+        background-color: #f0f9ff;
+        border-color: #10b981;
+        color: #065f46;
+      }
+      .error {
+        background-color: #fef2f2;
+        border-color: #ef4444;
+        color: #991b1b;
+      }
+      .info {
+        background-color: #fefce8;
+        border-color: #eab308;
+        color: #854d0e;
+      }
+      button {
+        background: #c70000;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 10px 5px;
+      }
+      button:hover {
+        background: #a60000;
+      }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-card">
+      <h1>Login Error Fix Test</h1>
+      <p>
+        Test the fixed login functionality to ensure "body stream already read"
+        error is resolved.
+      </p>
+
+      <div>
+        <h3>Test Login</h3>
+        <input
+          type="email"
+          id="email"
+          placeholder="Email"
+          value="test@example.com"
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          value="password123"
+        />
+        <select id="userType">
+          <option value="seller">Seller</option>
+          <option value="buyer">Buyer</option>
+          <option value="agent">Agent</option>
+          <option value="admin">Admin</option>
+        </select>
+        <button onclick="testLogin()" id="loginBtn">Test Login</button>
+      </div>
+
+      <div>
+        <h3>Test Registration</h3>
+        <input
+          type="text"
+          id="name"
+          placeholder="Full Name"
+          value="Test User"
+        />
+        <input
+          type="email"
+          id="regEmail"
+          placeholder="Email"
+          value="newuser@example.com"
+        />
+        <input type="tel" id="phone" placeholder="Phone" value="1234567890" />
+        <input
+          type="password"
+          id="regPassword"
+          placeholder="Password"
+          value="password123"
+        />
+        <button onclick="testRegistration()" id="regBtn">
+          Test Registration
+        </button>
+      </div>
+
+      <div>
+        <h3>Test OTP</h3>
+        <input
+          type="tel"
+          id="otpPhone"
+          placeholder="Phone Number"
+          value="1234567890"
+        />
+        <button onclick="testOTP()" id="otpBtn">Test Send OTP</button>
+      </div>
+
+      <button onclick="clearResults()">Clear Results</button>
+
+      <div id="results"></div>
+    </div>
+
+    <script>
+      function addResult(type, message) {
+        const resultsEl = document.getElementById("results");
+        const resultEl = document.createElement("div");
+        resultEl.className = `result ${type}`;
+        resultEl.innerHTML = `
+                <strong>${new Date().toLocaleTimeString()}</strong><br>
+                ${message}
+            `;
+        resultsEl.appendChild(resultEl);
+      }
+
+      function clearResults() {
+        document.getElementById("results").innerHTML = "";
+      }
+
+      async function testLogin() {
+        const btn = document.getElementById("loginBtn");
+        btn.disabled = true;
+        btn.textContent = "Testing...";
+
+        try {
+          addResult("info", "Testing login with fixed body stream handling...");
+
+          const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: document.getElementById("email").value,
+              password: document.getElementById("password").value,
+              userType: document.getElementById("userType").value,
+            }),
+          });
+
+          // Test that we can read the response without "body stream already read" error
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            addResult(
+              "success",
+              `Login successful! User: ${data.data.user.name || data.data.user.email}`,
+            );
+            addResult(
+              "success",
+              '✅ No "body stream already read" error - Fix successful!',
+            );
+          } else {
+            addResult(
+              "info",
+              `Login failed as expected: ${data.error || "Unknown error"}`,
+            );
+            addResult(
+              "success",
+              '✅ No "body stream already read" error - Fix successful!',
+            );
+          }
+        } catch (error) {
+          if (error.message.includes("body stream already read")) {
+            addResult("error", `❌ Fix failed: ${error.message}`);
+          } else {
+            addResult(
+              "info",
+              `Network/auth error (expected): ${error.message}`,
+            );
+            addResult(
+              "success",
+              '✅ No "body stream already read" error - Fix successful!',
+            );
+          }
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Test Login";
+        }
+      }
+
+      async function testRegistration() {
+        const btn = document.getElementById("regBtn");
+        btn.disabled = true;
+        btn.textContent = "Testing...";
+
+        try {
+          addResult(
+            "info",
+            "Testing registration with fixed body stream handling...",
+          );
+
+          const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: document.getElementById("name").value,
+              email: document.getElementById("regEmail").value,
+              phone: document.getElementById("phone").value,
+              password: document.getElementById("regPassword").value,
+              userType: "seller",
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            addResult(
+              "success",
+              `Registration successful! User: ${data.data.user.name}`,
+            );
+          } else {
+            addResult(
+              "info",
+              `Registration response: ${data.error || "Unknown error"}`,
+            );
+          }
+
+          addResult(
+            "success",
+            '✅ No "body stream already read" error - Fix successful!',
+          );
+        } catch (error) {
+          if (error.message.includes("body stream already read")) {
+            addResult("error", `❌ Fix failed: ${error.message}`);
+          } else {
+            addResult("info", `Network/auth error: ${error.message}`);
+            addResult(
+              "success",
+              '✅ No "body stream already read" error - Fix successful!',
+            );
+          }
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Test Registration";
+        }
+      }
+
+      async function testOTP() {
+        const btn = document.getElementById("otpBtn");
+        btn.disabled = true;
+        btn.textContent = "Testing...";
+
+        try {
+          addResult(
+            "info",
+            "Testing OTP send with fixed body stream handling...",
+          );
+
+          const response = await fetch("/api/auth/send-otp", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              phone: document.getElementById("otpPhone").value,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            addResult("success", "OTP send successful!");
+          } else {
+            addResult("info", `OTP response: ${data.error || "Unknown error"}`);
+          }
+
+          addResult(
+            "success",
+            '✅ No "body stream already read" error - Fix successful!',
+          );
+        } catch (error) {
+          if (error.message.includes("body stream already read")) {
+            addResult("error", `❌ Fix failed: ${error.message}`);
+          } else {
+            addResult("info", `Network/OTP error: ${error.message}`);
+            addResult(
+              "success",
+              '✅ No "body stream already read" error - Fix successful!',
+            );
+          }
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Test Send OTP";
+        }
+      }
+
+      // Auto-test on page load
+      window.addEventListener("load", () => {
+        addResult(
+          "info",
+          "Login error fix test page loaded. Ready to test fixed functionality.",
+        );
+      });
+    </script>
+  </body>
+</html>

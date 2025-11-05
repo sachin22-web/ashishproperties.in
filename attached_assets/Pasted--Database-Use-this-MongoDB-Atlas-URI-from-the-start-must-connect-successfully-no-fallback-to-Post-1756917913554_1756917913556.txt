@@ -1,0 +1,100 @@
+ Database: Use this MongoDB Atlas URI from the start (must connect successfully, no fallback to Postgres):
+      mongodb+srv://satyakachatgpt_db_user:SATYAKA123@cluster0.1pgdsl0.mongodb.net/
+  ✅ IMPORTANT: Connection string (notice password = SATYAKA123, there is **NO @ in password**):
+
+admin mein jo page management hai wo proper frontend footer pages management work nahi kar raha hai 
+pages add,delete,update,remove koi bhi action proper work nahi kar raha hai 
+
+admin backend control mein sidebar admiin menu jitna bhi menu pr click karna jo action button hai wo proper work nahi kar raha hai fix it 
+
+Categories Control (Admin) fully control with use existing monogodb database 
+
+Admin me jitni bhi categories dalte ho wo sab list me show honi chahiye.
+
+Kisi bhi category par click karne par usse linked sub-categories open ho jayein.
+
+Sub-categories ke liye Add / Edit / Delete ka option hona chahiye.
+
+after click Sub-categories properties should be seen with filter option jo already pages buna hua hai  
+
+New Projects Category (special) use monogodb database 
+
+
+Admin me ek “New Projects” naam ka category create karo.
+
+Ye category database se fully controlled ho (CRUD enabled).
+
+Admin se banner images add karne ka option ho aur wo banners frontend me slider (carousel) ki tarah chalayen.
+
+Sidebar Menu Integration
+
+Admin sidebar me ek naya menu item “New Projects” create ho.
+
+Is menu par click karte hi New Projects ke categories aur unke banners ka management panel open ho.
+
+Frontend Sync
+
+Admin me jo bhi categories, sub-categories ya banners add/update/delete hon, wo frontend par turant reflect karein (no cache).
+
+“New Projects” category ka banner slider frontend par proper responsive ho.
+
+Starting animation page:
+
+Splash/loader (2–3s or until first content fetch).
+
+Light, accessible animation; no layout shift.
+
+Blog (SEO):
+
+/blog index + /blog/:slug detail; OpenGraph + meta tags.
+
+Admin CRUD tie-in (draft/publish). Sitemap update.
+
+Banner ads thumb-scrollable:
+
+Home banner carousel me thumb strip add (swipeable); lazy-load banners.
+
+Main categories: Header/hero me MAPS aur NEW PROJECTS ko primary category buttons banao; routes: /maps, /new-projects.
+
+OTHER SERVICES (full):
+
+Main category Other Services add with sub-categories:
+Home Painting, Home Cleaning, Electrician, Plumbing, Carpentry, AC Service/Repair, Home Appliances Service/Repair (WM, RO, MW, Fridge), Home Interiors, Packers & Movers.
+
+Har subcategory ke listing + post-form fields (service location, visit charge, availability).
+
+Autosave while posting ad:
+
+Post form draft ko localStorage me 5s debounce pe save/load; Draft clear on successful post.
+
+Screenshot issue:
+
+Web apps screenshots block/allow reliably control nahi kar sakte. Agar native wrapper hai to Android FLAG_SECURE toggle admin setting add karo; web par koi blocker overlay remove karo (if any).
+
+Footer links functional:
+
+“Popular Locations”, “Quick Links”, “Legal Support” ke sab sublinks correct routes pe le jayein.
+
+Non-existent pages → graceful 404 + suggestions.
+
+Post Property guard:
+
+Logged-out user pe /auth?returnTo=/post redirect; blank page bug fix.
+
+Bottom navbar:
+
+“Categories” button remove; “My Ads” add (route /account/my-ads, auth-guarded). frontend website 
+
+Wishlist blank page fix:
+
+/wishlist route implement; empty-state, list fetched; skeleton loaders.
+
+QA checklist (auto):
+
+Mobile (360×640), Tablet (768×1024), Desktop (1440), iPhone notch safe areas.
+
+Lighthouse perf≥85, SEO≥90, a11y≥90 (after ads placeholders).
+
+All routes load without console errors.
+
+If koi bhi test fail: rollback & fix then proceed, warna tokens refund

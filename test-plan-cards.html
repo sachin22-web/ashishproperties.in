@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Plan Cards Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .result {
+        margin: 10px 0;
+        padding: 10px;
+        background: #f5f5f5;
+        border-radius: 5px;
+      }
+      .success {
+        background: #e8f5e8;
+        color: #2e7d32;
+      }
+      .error {
+        background: #ffebee;
+        color: #c62828;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Plan Cards Test</h1>
+    <div id="results"></div>
+
+    <script>
+      function testPlanCards() {
+        const results = document.getElementById("results");
+
+        // Test if plan-card elements exist
+        const planCards = document.querySelectorAll(
+          '[data-testid="plan-card"]',
+        );
+
+        const div = document.createElement("div");
+        div.className = "result";
+
+        if (planCards.length > 0) {
+          div.className += " success";
+          div.innerHTML = `
+                    <h3>✅ SUCCESS</h3>
+                    <p>Found ${planCards.length} plan-card elements!</p>
+                    <p>Test condition: document.querySelectorAll('[data-testid="plan-card"]').length > 0 = true</p>
+                `;
+        } else {
+          div.className += " error";
+          div.innerHTML = `
+                    <h3>❌ FAILED</h3>
+                    <p>No plan-card elements found!</p>
+                    <p>Test condition: document.querySelectorAll('[data-testid="plan-card"]').length > 0 = false</p>
+                `;
+        }
+
+        results.appendChild(div);
+      }
+
+      // Test immediately and also after a delay for dynamic content
+      testPlanCards();
+      setTimeout(testPlanCards, 2000);
+      setTimeout(testPlanCards, 5000);
+    </script>
+  </body>
+</html>

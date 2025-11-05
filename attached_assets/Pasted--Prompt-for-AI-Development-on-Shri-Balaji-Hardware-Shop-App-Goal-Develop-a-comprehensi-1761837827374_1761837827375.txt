@@ -1,0 +1,46 @@
+**Prompt for AI Development on "Shri Balaji Hardware Shop" App**
+
+### Goal:
+Develop a comprehensive Product Requirements Document (PRD) and technical blueprint for the "Shri Balaji Hardware Shop" application that covers all aspects of plumber services, inventory management, POS, and GST billing for a multi-branch hardware retail business.
+
+### Instructions:
+
+1. **Roles and User Management**:
+   - Define user roles: Owner/Admin, Manager, Cashier/POS, Store Keeper, Technician/Plumber, Accountant.
+   - Outline permissions and responsibilities for each role.
+
+2. **Core Features**:
+   - Inventory & Products: Create detailed specifications for item management, stock tracking, and product attributes.
+   - Purchases & Vendors: Document the workflow from Purchase Request to Vendor Bills.
+   - Sales, POS & Invoicing: Detail the POS functionalities, pricing tiers, and invoicing processes.
+   - Services & Job Management: Describe how service requests are managed, including technician assignment and job tracking.
+   - Stock Operations: Outline stock transfer, adjustments, and physical stock count processes.
+   - CRM & Inquiries: Specify how customer inquiries and leads are managed.
+   - Finance & Tax: Document the integration of GST compliance and financial reporting.
+   - Reports & Analytics: Define key reports and analytics dashboards needed for business insights.
+   - Admin & Settings: Describe the administrative features for managing the application.
+
+3. **Technical Specifications**:
+   - Detail the technology stack: Frontend (React, Tailwind), Backend (Node.js, Express), Database (MongoDB).
+   - Outline the data model including collections for items, stocks, vendors, customers, orders, and service requests.
+   - Provide sample API endpoints for authentication, inventory management, purchases, sales, services, transfers, and reporting.
+   - Include security measures like user authentication, role-based access control, and data validation.
+
+4. **User Experience (UX) Design**:
+   - Describe the user interface design principles focusing on usability for POS systems, technician apps, and admin dashboards.
+   - Highlight key UX features such as fast billing processes, easy navigation, and efficient job management for technicians.
+
+5. **Roadmap & Delivery Phases**:
+   - Outline a phased delivery plan for the application development from MVP to advanced features.
+   - Define acceptance criteria for key functionalities to ensure quality and compliance.
+
+6. **Bonus Features**:
+   - Suggest additional features like a clickable ERD, Postman collection for API testing, and a scaffolded codebase to accelerate development.
+
+### Deliverables:
+- A structured PRD document that includes all sections detailed above.
+- A technical blueprint that outlines the architecture, data flow, and integration points.
+- Sample user interface mockups to visualize the application design.
+
+### Expected Output:
+An organized and comprehensive document suitable for guiding the development team through the entire process of building the "Shri Balaji Hardware Shop" application.
